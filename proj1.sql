@@ -19,49 +19,77 @@ DROP VIEW IF EXISTS q4v;
 -- Question 0
 CREATE VIEW q0(era)
 AS
-  SELECT 1 -- replace this line
+  SELECT MAX(era)
+  FROM pitching
 ;
 
 -- Question 1i
 CREATE VIEW q1i(namefirst, namelast, birthyear)
 AS
-  SELECT 1, 1, 1 -- replace this line
+  SELECT namefirst, namelast, birthyear
+  FROM people
+  WHERE weight > 300
 ;
 
 -- Question 1ii
 CREATE VIEW q1ii(namefirst, namelast, birthyear)
 AS
-  SELECT 1, 1, 1 -- replace this line
+  SELECT namefirst, namelast, birthyear
+  FROM people
+  WHERE namefirst LIKE '% %'
 ;
 
 -- Question 1iii
 CREATE VIEW q1iii(birthyear, avgheight, count)
 AS
-  SELECT 1, 1, 1 -- replace this line
+  SELECT birthyear, avg(height), count(*)
+  FROM people
+  GROUP BY birthyear
 ;
 
 -- Question 1iv
 CREATE VIEW q1iv(birthyear, avgheight, count)
 AS
-  SELECT 1, 1, 1 -- replace this line
+  SELECT birthyear, avg(height), count(*)
+  FROM people
+  GROUP BY birthyear
+  HAVING avg(height) > 70
 ;
 
 -- Question 2i
 CREATE VIEW q2i(namefirst, namelast, playerid, yearid)
 AS
-  SELECT 1, 1, 1, 1 -- replace this line
+  SELECT namefirst, namelast, people.playerid, yearid
+  FROM people INNER JOIN HallofFame
+  ON people.playerid = HallofFame.playerid
+  WHERE inducted = 'Y'
+  ORDER BY yearid DESC, HallofFame.playerid
 ;
 
 -- Question 2ii
 CREATE VIEW q2ii(namefirst, namelast, playerid, schoolid, yearid)
 AS
-  SELECT 1, 1, 1, 1, 1 -- replace this line
+  SELECT namefirst, namelast, people.playerid, schools.schoolid, yearid
+  FROM people INNER JOIN HallofFame 
+  ON people.playerid = HallofFame.playerid
+  INNER JOIN collegePlaying
+  ON people.playerid = collegePlaying.playerid
+  INNER JOIN schools
+  ON collegePlaying.schoolid = schools.schoolid
+  WHERE schools.schoolState = 'CA' and inducted = 'Y'
+  ORDER BY yearid DESC, HallofFame.playerid
 ;
 
 -- Question 2iii
 CREATE VIEW q2iii(playerid, namefirst, namelast, schoolid)
 AS
-  SELECT 1, 1, 1, 1 -- replace this line
+  SELECT people.playerid, namefirst, namelast, schoolid
+  FROM people INNER JOIN HallofFame
+  ON people.playerid = HallofFame.playerid
+  LEFT OUTER JOIN collegePlaying
+  ON people.playerid = collegePlaying.playerid
+  WHERE inducted = 'Y'
+  ORDER BY people.playerid DESC, schoolid
 ;
 
 -- Question 3i
